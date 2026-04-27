@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: visit-service
+  datasource:
+    url: jdbc:h2:mem:visitdb
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    sampling:
+      probability: 1.0
+
+# Resilience4j Configuration
+resilience4j:
+  circuitbreaker:
+    instances:
+      petService:
+        registerHealthIndicator: true
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        permittedNumberOfCallsInHalfOpenState: 3
+        waitDurationInOpenState: 10s
+        failureRateThreshold: 50
+        eventConsumerBufferSize: 10
+  timelimiter:
+    instances:
+      petService:
+        timeoutDuration: 2s # Chaos: strict timeout to force failures
+
+logging:
+  level:
+    org.springframework.samples.petclinic.visit: DEBUG
+    io.github.resilience4j: DEBUG
