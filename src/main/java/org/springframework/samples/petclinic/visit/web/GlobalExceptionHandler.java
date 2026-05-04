@@ -1,5 +1,6 @@
 package org.springframework.samples.petclinic.visit.web;
 
+import org.springframework.samples.petclinic.visit.client.InactivePetException;
 import org.springframework.samples.petclinic.visit.client.PetValidationException;
 import org.springframework.samples.petclinic.visit.client.RemoteServiceException;
 import org.springframework.http.HttpStatus;
@@ -19,6 +20,15 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, ex.getMessage());
         problemDetail.setTitle("Visit Not Found");
         problemDetail.setType(URI.create("https://petclinic.org/errors/not-found"));
+        problemDetail.setProperty("timestamp", Instant.now());
+        return problemDetail;
+    }
+
+    @ExceptionHandler(InactivePetException.class)
+    public ProblemDetail handleInactivePetException(InactivePetException ex) {
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, ex.getMessage());
+        problemDetail.setTitle("Pet Is Inactive");
+        problemDetail.setType(URI.create("https://petclinic.org/errors/inactive-pet"));
         problemDetail.setProperty("timestamp", Instant.now());
         return problemDetail;
     }

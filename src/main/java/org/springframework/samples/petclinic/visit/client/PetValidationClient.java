@@ -18,29 +18,29 @@ public class PetValidationClient {
         this.restClient = restClientBuilder.baseUrl("http://customer-service").build();
     }
 
-    @CircuitBreaker(name = "petService", fallbackMethod = "handlePetValidationFallback")
+    @CircuitBreaker(name = "petService", fallbackMethod = "handlePetValidationFallback",
+            ignoreExceptions = {InactivePetException.class, PetValidationException.class})
     @TimeLimiter(name = "petService")
     public void validatePet(Integer petId) {
         log.info("Validating pet {} with Customer Service", petId);
-        
+
         restClient.get()
                 .uri("/api/internal/pets/{petId}", petId)
                 .retrieve()
-                .onStatus(status -> status.equals(HttpStatus.NOT_FOUND), (request, response) -> {
+                .onStatus(HttpStatus.NOT_FOUND::equals, (request, response) -> {
                     throw new PetValidationException("Pet with ID " + petId + " does not exist.");
+                })
+                .onStatus(HttpStatus.CONFLICT::equals, (request, response) -> {
+                    throw new InactivePetException(petId);
                 })
                 .toBodilessEntity();
     }
 
-    // Fallback method
-    // Important: Fallback method signature must match the original method plus an exception parameter
+    // Fallback method signature must match the original method plus an exception parameter.
+    // InactivePetException and PetValidationException are ignored by the circuit breaker
+    // so they propagate directly and never reach this fallback.
     public void handlePetValidationFallback(Integer petId, Exception ex) {
         log.error("Fallback triggered for petId {}. Reason: {}", petId, ex.getMessage());
-        
-        if (ex instanceof PetValidationException) {
-            throw (PetValidationException) ex;
-        }
-        
         throw new RemoteServiceException("Customer Service is currently unavailable or too slow. Please try again later.", ex);
     }
 }
