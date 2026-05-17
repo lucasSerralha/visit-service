@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.http.HttpStatus;
+import org.springframework.samples.petclinic.visit.dto.PetValidationResponse;
 
 @Service
 @Slf4j
@@ -24,16 +25,20 @@ public class PetValidationClient {
     public void validatePet(Integer petId) {
         log.info("Validating pet {} with Customer Service", petId);
 
-        restClient.get()
+        PetValidationResponse response = restClient.get()
                 .uri("/api/internal/pets/{petId}", petId)
                 .retrieve()
-                .onStatus(HttpStatus.NOT_FOUND::equals, (request, response) -> {
+                .onStatus(HttpStatus.NOT_FOUND::equals, (req, res) -> {
                     throw new PetValidationException("Pet with ID " + petId + " does not exist.");
                 })
-                .onStatus(HttpStatus.CONFLICT::equals, (request, response) -> {
+                .onStatus(HttpStatus.CONFLICT::equals, (req, res) -> {
                     throw new InactivePetException(petId);
                 })
-                .toBodilessEntity();
+                .body(PetValidationResponse.class);
+
+        if (response != null && "INACTIVE".equals(response.status())) {
+            throw new InactivePetException(petId);
+        }
     }
 
     // Fallback method signature must match the original method plus an exception parameter.

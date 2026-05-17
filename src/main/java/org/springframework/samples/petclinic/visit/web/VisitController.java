@@ -1,6 +1,8 @@
 package org.springframework.samples.petclinic.visit.web;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,6 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ProblemDetail;
 import org.springframework.samples.petclinic.visit.client.PetValidationClient;
 import org.springframework.samples.petclinic.visit.domain.Visit;
 import org.springframework.samples.petclinic.visit.dto.UpdateVisitRequestDTO;
@@ -47,7 +50,7 @@ public class VisitController {
     @Operation(summary = "Get a visit by ID", description = "Returns a single visit by its ID or 404 if not found")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Visit found"),
-        @ApiResponse(responseCode = "404", description = "Visit not found")
+        @ApiResponse(responseCode = "404", description = "Visit not found", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public VisitResponseDTO getVisitById(@PathVariable Integer visitId) {
         log.info("Fetching visit with ID: {}", visitId);
@@ -61,8 +64,8 @@ public class VisitController {
     @Operation(summary = "Create a new visit", description = "Validates the pet existence before saving the visit")
     @ApiResponses({
         @ApiResponse(responseCode = "201", description = "Visit created successfully"),
-        @ApiResponse(responseCode = "400", description = "Invalid pet or visit data"),
-        @ApiResponse(responseCode = "503", description = "Validation service unavailable")
+        @ApiResponse(responseCode = "400", description = "Invalid pet or visit data", content = @Content(schema = @Schema(implementation = ProblemDetail.class))),
+        @ApiResponse(responseCode = "503", description = "Validation service unavailable", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public VisitResponseDTO createVisit(@Valid @RequestBody VisitRequestDTO request) {
         log.info("Creating visit for pet ID: {}", request.petId());
@@ -80,7 +83,7 @@ public class VisitController {
     @Operation(summary = "Update an existing visit", description = "Updates the description and date of an existing visit")
     @ApiResponses({
         @ApiResponse(responseCode = "200", description = "Visit updated successfully"),
-        @ApiResponse(responseCode = "404", description = "Visit not found")
+        @ApiResponse(responseCode = "404", description = "Visit not found", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public VisitResponseDTO updateVisit(@PathVariable Integer visitId,
                                         @Valid @RequestBody UpdateVisitRequestDTO request) {
@@ -99,7 +102,7 @@ public class VisitController {
     @Operation(summary = "Delete a visit", description = "Removes a visit by its ID")
     @ApiResponses({
         @ApiResponse(responseCode = "204", description = "Visit deleted successfully"),
-        @ApiResponse(responseCode = "404", description = "Visit not found")
+        @ApiResponse(responseCode = "404", description = "Visit not found", content = @Content(schema = @Schema(implementation = ProblemDetail.class)))
     })
     public void deleteVisit(@PathVariable Integer visitId) {
         log.info("Deleting visit with ID: {}", visitId);
