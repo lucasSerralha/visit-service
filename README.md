@@ -63,3 +63,20 @@ We adhere strictly to **RFC 7807 (Problem Details for HTTP APIs)** to provide st
 3. **Access API Documentation**
    Once running, you can explore the interactive Swagger UI at:
    `http://localhost:8082/swagger-ui.html`
+
+## Testing Approach
+
+Tests use `@WebMvcTest` (controller slice only). `VisitRepository`, `VisitMapper`, and `PetValidationClient` are mocked. Tests are grouped with `@Nested` inner classes per operation (CreateVisit, GetVisitById, etc.).
+
+### Commands
+
+```bash
+# Test all
+mvn test
+
+# Test a specific class
+mvn test -Dtest=VisitControllerTest
+
+# Test a specific method
+mvn test -Dtest=VisitControllerTest#shouldCreateVisit
+```

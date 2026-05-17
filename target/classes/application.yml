@@ -13,6 +13,12 @@ spring:
   h2:
     console:
       enabled: true
+  cloud:
+    discovery:
+      simple:
+        instances:
+          customer-service:
+            - uri: http://localhost:8080
 
 server:
   port: 8082
@@ -43,6 +49,9 @@ resilience4j:
         waitDurationInOpenState: 10s
         failureRateThreshold: 50
         eventConsumerBufferSize: 10
+        ignoreExceptions:
+          - org.springframework.samples.petclinic.visit.client.InactivePetException
+          - org.springframework.samples.petclinic.visit.client.PetValidationException
   timelimiter:
     instances:
       petService:

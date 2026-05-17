@@ -19,8 +19,7 @@ public class PetValidationClient {
         this.restClient = restClientBuilder.baseUrl("http://customer-service").build();
     }
 
-    @CircuitBreaker(name = "petService", fallbackMethod = "handlePetValidationFallback",
-            ignoreExceptions = {InactivePetException.class, PetValidationException.class})
+    @CircuitBreaker(name = "petService", fallbackMethod = "handlePetValidationFallback")
     @TimeLimiter(name = "petService")
     public void validatePet(Integer petId) {
         log.info("Validating pet {} with Customer Service", petId);

@@ -2,12 +2,14 @@ org/springframework/samples/petclinic/visit/client/PetValidationClient.class
 org/springframework/samples/petclinic/visit/domain/Visit$VisitBuilder.class
 org/springframework/samples/petclinic/visit/domain/Visit.class
 org/springframework/samples/petclinic/visit/web/GlobalExceptionHandler.class
+org/springframework/samples/petclinic/visit/dto/PetValidationResponse.class
 org/springframework/samples/petclinic/visit/client/PetValidationException.class
 org/springframework/samples/petclinic/visit/web/VisitController.class
 org/springframework/samples/petclinic/visit/client/ClientConfig.class
 org/springframework/samples/petclinic/visit/repository/VisitRepository.class
 org/springframework/samples/petclinic/visit/web/VisitNotFoundException.class
 org/springframework/samples/petclinic/visit/dto/UpdateVisitRequestDTO.class
+org/springframework/samples/petclinic/visit/client/InactivePetException.class
 org/springframework/samples/petclinic/visit/VisitServiceApplication.class
 org/springframework/samples/petclinic/visit/dto/VisitRequestDTO.class
 org/springframework/samples/petclinic/visit/client/RemoteServiceException.class

@@ -1,5 +1,6 @@
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/VisitServiceApplication.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/client/RemoteServiceException.java
+/home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/client/InactivePetException.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/dto/VisitResponseDTO.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/dto/UpdateVisitRequestDTO.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/client/PetValidationException.java
@@ -8,6 +9,7 @@
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/repository/VisitRepository.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/web/VisitController.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/client/PetValidationClient.java
+/home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/dto/PetValidationResponse.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/web/VisitNotFoundException.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/dto/VisitRequestDTO.java
 /home/lucas/ASID/visit-service/src/main/java/org/springframework/samples/petclinic/visit/client/ClientConfig.java
